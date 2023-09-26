@@ -18,6 +18,7 @@ COPY app .
 
 RUN npm run build
 
-RUN tdb &
+COPY start.sh /start.sh
+RUN chmod +x /start.sh
 
-CMD ["npm", "start"]
+CMD [ "/start.sh" ]
