@@ -1,0 +1,6 @@
+
+$TABLE todo {
+  id Int key(primary)
+  content String
+  createdAt Date default(now)
+}
