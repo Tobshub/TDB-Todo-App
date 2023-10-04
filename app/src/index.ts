@@ -1,16 +1,27 @@
 import Tobspress from "@tobshub/tobspress";
 import path from "path";
-import TobsDB from "tobsdb";
+import TobsDB, { PrimaryKey } from "tobsdb";
 
 const PORT = 4000;
 const app = new Tobspress({ log: true });
 app.static("public");
 
+type DB = {
+  todo: {
+    id: PrimaryKey<number>;
+    content: string;
+    createdAt?: Date;
+  };
+};
+
 async function main() {
-  const db = await TobsDB.connect(
+  const db = await TobsDB.connect<DB>(
     "ws://localhost:7085",
     "example_todo_app",
-    path.join(process.cwd(), "tdb/schema.tdb")
+    {
+      schema_path: path.join(process.cwd(), "tdb/schema.tdb"),
+      auth: { username: "user", password: "pass" },
+    }
   );
 
   app.post("/todo", async (req, res) => {
