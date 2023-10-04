@@ -6,7 +6,7 @@ RUN go version
 RUN node -v
 RUN npm -v
 
-RUN go install github.com/tobshub/tobsdb/cmd/tdb@latest
+RUN go install github.com/tobshub/tobsdb/cmd/tdb@v1.1.4
 
 WORKDIR /app
 
