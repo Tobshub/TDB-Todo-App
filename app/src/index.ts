@@ -6,7 +6,7 @@ const PORT = 4000;
 const app = new Tobspress({ log: true });
 app.static("public");
 
-type DB = {
+type Schema = {
   todo: {
     id: PrimaryKey<number>;
     content: string;
@@ -15,14 +15,15 @@ type DB = {
 };
 
 async function main() {
-  const db = await TobsDB.connect<DB>(
-    "ws://localhost:7085",
-    "example_todo_app",
-    {
-      schema_path: path.join(process.cwd(), "tdb/schema.tdb"),
-      auth: { username: "user", password: "pass" },
-    }
-  );
+  const db = new TobsDB<Schema>({
+    host: "localhost",
+    port: 7085,
+    db: "example_todo_app",
+    schemaPath: path.join(process.cwd(), "tdb/schema.tdb"),
+    username: "user",
+    password: "pass",
+  });
+  await db.connect();
 
   app.post("/todo", async (req, res) => {
     const { content } = await req.body;
